@@ -1,6 +1,6 @@
 # Health — Prompt para Claude Code
 
-Requiere: el `index.html` base con sidebar (ver `prompt-01-dashboard.md`). Opcional: si ya tienes montada una sección de tipo "despensa/cocina" con un registro de qué comes y cuándo (como en `prompt-03-kitchen.md`), esta sección puede leer esos datos para estimar ingesta de nutrientes — si no la tienes, construye igualmente esta sección y deja esa parte concreta como un cálculo que simplemente no tendrá datos hasta que exista esa otra sección.
+Requiere: haber construido ya `prompt-01-dashboard.md` a `prompt-04-mealprep.md` (trae el sidebar y el sistema de diseño). Opcional: si ya tienes montada una sección de tipo "despensa/cocina" con un registro de qué comes y cuándo (como en `prompt-03-kitchen.md`), esta sección puede leer esos datos para estimar ingesta de nutrientes — si no la tienes, construye igualmente esta sección y deja esa parte concreta como un cálculo que simplemente no tendrá datos hasta que exista esa otra sección.
 
 ## Objetivo
 
@@ -9,6 +9,17 @@ Un registro de analíticas de sangre a lo largo del tiempo, con las hormonas/vit
 ## Sistema de diseño base
 
 Mismo sistema que `prompt-01-dashboard.md`. Prefijo de clases sugerido: `.lb-*`.
+
+## Añadir al sidebar
+
+Añade este item al `.sidebar-nav` ya existente, justo debajo de "Meal Prep":
+```html
+<button type="button" class="sidebar-item" data-view="healthView">
+  <span class="sidebar-item-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 20.5 3.5 13.5a4.95 4.95 0 1 1 7-7l7 7a4.95 4.95 0 1 1-7 7Z"/><path d="M8.5 8.5l7 7"/></svg></span>
+  Health
+</button>
+```
+Y un `<div id="healthView" class="hidden">` nuevo dentro de `#appRoot`, con el contenido de esta sección.
 
 ## Estructura visual (de arriba abajo)
 

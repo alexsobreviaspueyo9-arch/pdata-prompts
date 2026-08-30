@@ -1,6 +1,6 @@
 # Expenses — Prompt para Claude Code
 
-Requiere: el `index.html` base con sidebar (ver `prompt-01-dashboard.md`). Necesita **tu propia cuenta de Supabase** (gratuita) — a diferencia del resto de secciones, esta usa su propio proyecto de Supabase independiente, sin pasar por el patrón de sincronización genérico de las demás. Opcional: alguna forma de insertar gastos automáticamente al pagar con tarjeta (ver el punto de integración externa más abajo) — sin eso, puedes seguir usando la sección igualmente añadiendo gastos a mano directamente en la tabla de Supabase o con un pequeño formulario propio.
+Requiere: haber construido ya `prompt-01-dashboard.md` a `prompt-08-books.md` (trae el sidebar y el sistema de diseño). Necesita **tu propia cuenta de Supabase** (gratuita) — a diferencia del resto de secciones, esta usa su propio proyecto de Supabase independiente, sin pasar por el patrón de sincronización genérico de las demás. Opcional: alguna forma de insertar gastos automáticamente al pagar con tarjeta (ver el punto de integración externa más abajo) — sin eso, puedes seguir usando la sección igualmente añadiendo gastos a mano directamente en la tabla de Supabase o con un pequeño formulario propio.
 
 ## Objetivo
 
@@ -9,6 +9,17 @@ Un panel de gastos: un total del mes con un gráfico de barras interactivo para 
 ## Sistema de diseño base
 
 Mismo sistema que `prompt-01-dashboard.md`. Prefijo de clases sugerido: `.ex-*`. Los gráficos de barras de esta sección siguen un patrón consistente: barras planas en gris, y la barra seleccionada/actual con el degradado naranja de acento — usa un `id` de degradado SVG distinto por cada gráfico que tengas visible a la vez en pantalla (si dos gráficos comparten el mismo `id` de `<linearGradient>` mientras ambos son visibles, el navegador puede aplicar el color equivocado a uno de los dos).
+
+## Añadir al sidebar
+
+Añade este item al `.sidebar-nav` ya existente, justo debajo de "Books" — el último de la lista:
+```html
+<button type="button" class="sidebar-item" data-view="expensesView">
+  <span class="sidebar-item-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20"/><path d="M6 15h4"/></svg></span>
+  Expenses
+</button>
+```
+Y un `<div id="expensesView" class="hidden">` nuevo dentro de `#appRoot`, con el contenido de esta sección.
 
 ## Configuración de Supabase (obligatoria para esta sección)
 

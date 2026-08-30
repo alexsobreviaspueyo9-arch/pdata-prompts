@@ -1,6 +1,6 @@
 # Meal Prep — Prompt para Claude Code
 
-Requiere: el `index.html` base con sidebar (ver `prompt-01-dashboard.md`). No necesita ninguna cuenta externa — esta sección es intencionadamente 100% local, sin sincronización, porque el plan es fijo y personal.
+Requiere: haber construido ya `prompt-01-dashboard.md`, `prompt-02-gym.md` y `prompt-03-kitchen.md` (trae el sidebar y el sistema de diseño). No necesita ninguna cuenta externa — esta sección es intencionadamente 100% local, sin sincronización, porque el plan es fijo y personal.
 
 ## Objetivo
 
@@ -9,6 +9,17 @@ Guiar en vivo una sesión de batch-cooking (cocinar de golpe para varios días) 
 ## Sistema de diseño base
 
 Mismo sistema que `prompt-01-dashboard.md`, pero con un matiz: como esto se usa mientras se cocina (manos mojadas/ocupadas), todo el texto y los botones deben ser un punto más grandes de lo habitual en el resto de la app, priorizando que se lean y se toquen de un vistazo rápido por encima de la densidad visual. Prefijo de clases sugerido: `.mp-*`.
+
+## Añadir al sidebar
+
+Añade este item al `.sidebar-nav` ya existente, justo debajo de "Kitchen":
+```html
+<button type="button" class="sidebar-item" data-view="mealPrepView">
+  <span class="sidebar-item-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 13a4 4 0 0 1 1-7.87A4.5 4.5 0 0 1 12 3a4.5 4.5 0 0 1 5 2.13A4 4 0 0 1 18 13"/><path d="M6 13v6h12v-6"/><path d="M8 19h8"/></svg></span>
+  Meal Prep
+</button>
+```
+Y un `<div id="mealPrepView" class="hidden">` nuevo dentro de `#appRoot`, con el contenido de esta sección.
 
 ## 0. Datos base (hardcodea tu propio plan aquí — no hace falta ninguna base de datos)
 

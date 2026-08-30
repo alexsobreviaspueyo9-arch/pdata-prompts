@@ -1,6 +1,6 @@
 # Kitchen — Prompt para Claude Code
 
-Requiere: el `index.html` base con sidebar (ver `prompt-01-dashboard.md` para el sistema de diseño). No necesita ninguna cuenta externa salvo, opcionalmente, Supabase para sincronizar.
+Requiere: haber construido ya `prompt-01-dashboard.md` y `prompt-02-gym.md` (trae el sidebar y el sistema de diseño). No necesita ninguna cuenta externa salvo, opcionalmente, Supabase para sincronizar.
 
 ## Objetivo
 
@@ -9,6 +9,17 @@ Un inventario de despensa: registra lo que compras, réstalo cuando lo consumes,
 ## Sistema de diseño base
 
 Mismo sistema que `prompt-01-dashboard.md`. Prefijo de clases sugerido: `.kx-*`.
+
+## Añadir al sidebar
+
+Añade este item al `.sidebar-nav` ya existente, justo debajo de "Gym":
+```html
+<button type="button" class="sidebar-item" data-view="kitchenView">
+  <span class="sidebar-item-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2v10"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg></span>
+  Kitchen
+</button>
+```
+Y un `<div id="kitchenView" class="hidden">` nuevo dentro de `#appRoot`, con el contenido de esta sección.
 
 ## Estructura visual
 

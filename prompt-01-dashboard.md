@@ -1,10 +1,10 @@
 # Dashboard — Prompt para Claude Code
 
-Requiere: un `index.html` base de una sola página, sin build, con una barra de navegación lateral (sidebar) ya montada con al menos un item "Dashboard" que muestra/oculta este bloque. Si no tienes eso todavía, pide primero a Claude Code que monte ese esqueleto (sidebar fijo a la izquierda en escritorio, cajón deslizante en móvil, un `<div>` por sección que se muestra/oculta según el item de sidebar activo) usando el sistema de diseño de abajo, y luego aplica este prompt.
+Requiere: nada más que Claude Code y un editor — este prompt construye el `index.html` desde cero, incluyendo el propio esqueleto de la app (sidebar de navegación) y la primera sección real (Dashboard). El resto de secciones (`prompt-02-gym.md` en adelante) se construyen después, cada una añadiéndose a este mismo sidebar.
 
 ## Objetivo
 
-La pantalla de inicio de un dashboard personal: un vistazo rápido al día (frase motivadora rotativa a modo de "ticker", un anillo circular que marca qué parte del día ha pasado, una lista de tareas/objetivos de hoy) y al trimestre en curso (una lista de objetivos trimestrales, separada de la de hoy).
+El esqueleto de la app entera (sidebar de navegación fijo) más la pantalla de inicio de un dashboard personal: un vistazo rápido al día (frase motivadora rotativa a modo de "ticker", un anillo circular que marca qué parte del día ha pasado, una lista de tareas/objetivos de hoy) y al trimestre en curso (una lista de objetivos trimestrales, separada de la de hoy).
 
 ## Sistema de diseño base (aplícalo tal cual, en todo el archivo)
 
@@ -18,6 +18,55 @@ La pantalla de inicio de un dashboard personal: un vistazo rápido al día (fras
 - **Título de sección**: `<h1>` con degradado vertical de texto (`background: linear-gradient(180deg, #FFFFFF 0%, #C7C4BC 120%)` recortado al texto vía `background-clip:text` + `-webkit-text-fill-color:transparent`), 28px, peso 700, `letter-spacing:-0.025em`.
 - **Movimiento**: cualquier animación debe respetar `prefers-reduced-motion: reduce` (desactivada o reducida a un cambio instantáneo).
 - **Gráficos/anillos**: sin librerías externas — SVG dibujado a mano. Un anillo de progreso circular es un `<svg>` con dos `<circle>` concéntricos (uno de "pista" en `rgba(255,255,255,0.06)`, uno de "relleno" con `stroke-dasharray`/`stroke-dashoffset` controlados por JS, rotado `-90deg` para que el 0% empiece arriba).
+
+## Sidebar (esqueleto de toda la app — constrúyelo en este prompt, una sola vez)
+
+El resto de secciones que construyas más adelante (Gym, Kitchen, etc.) simplemente añaden un item nuevo a este mismo sidebar y un `<div>` de sección nuevo — no lo reconstruyas cada vez.
+
+**Estructura HTML**: dos hermanos directos dentro de `<body>`, además de la landing (que se construye al final, en su propio prompt aparte):
+```html
+<div id="appRoot">
+  <nav class="sidebar" id="sidebar" role="navigation" aria-label="Sections">
+    <div class="sidebar-header">
+      <div class="sidebar-brand">
+        <button type="button" class="app-logo" id="appLogoBtn" aria-label="Back to home"><span class="app-logo-text">PD</span></button>
+        <span class="sidebar-brand-text">PD Personal Data</span>
+      </div>
+      <button type="button" class="sidebar-collapse-btn" id="sidebarCollapseBtn" aria-label="Collapse sidebar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+    </div>
+    <label class="sidebar-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input type="text" class="sidebar-search-input" placeholder="Search..." aria-label="Search">
+    </label>
+    <div class="sidebar-nav">
+      <button type="button" class="sidebar-item" data-view="dashboardView" aria-current="page">
+        <span class="sidebar-item-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"/></svg></span>
+        Dashboard
+      </button>
+      <!-- Cada sección nueva añade aquí su propio <button class="sidebar-item" data-view="...">, por este orden: Gym, Kitchen, Meal Prep, Health, Sleep, Analysis, Books, Expenses. -->
+    </div>
+  </nav>
+  <button type="button" class="sidebar-mobile-toggle hidden" id="sidebarMobileToggle" aria-label="Open menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+  </button>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <div id="dashboardView"><!-- contenido de esta sección --></div>
+  <!-- Cada sección nueva añade aquí su propio <div id="...View" class="hidden">. -->
+</div>
+```
+
+**El logo** (`.app-logo`, reutilizado también a mayor tamaño en la landing más adelante): un cuadrado redondeado de 52px (`--logo-size`), fondo casi negro (`#050505`), borde sutil, con dos capas de glow interior generadas por pseudo-elementos (nunca `<div>`s reales, para que no puedan chocar con ninguna regla CSS de "hijos directos" que se añada después): un `::before` con un `radial-gradient` naranja emergiendo desde el borde inferior, desenfocado (`filter: blur(...)`, escalado con `--logo-size`), y un `::after` con un gradiente blanco muy sutil de arriba a abajo para el brillo "cristal". El texto son las iniciales, en el centro, peso 800.
+
+**Comportamiento del sidebar**:
+- Fijo a la izquierda en escritorio (`position:fixed`, 264px de ancho, fondo `rgba(10,10,10,0.72)` con el mismo blur de cristal que las tarjetas, borde derecho sutil). Se abre/cierra con la clase `.is-open` (`transform: translateX(0)` abierto, `translateX(-100%)` cerrado) — en escritorio (`≥820px`) empieza abierto por defecto y empuja el contenido (`body.sidebar-open { padding-left: 284px; }`); en móvil (`<820px`) empieza cerrado y se superpone como un cajón deslizante con un fondo oscuro semitransparente detrás (`.sidebar-backdrop`) que lo cierra al tocarlo.
+- El botón de colapsar (dentro del sidebar) y el botón flotante `#sidebarMobileToggle` (que aparece cuando el sidebar está cerrado, en cualquier tamaño de pantalla) alternan el mismo estado — es el mismo mecanismo para "colapsar en escritorio" y "abrir el cajón en móvil", no dos sistemas distintos.
+- Al elegir un item de navegación en móvil, cierra el cajón automáticamente después; en escritorio, no (ahí no tapa el contenido, así que no hace falta).
+- Cada `.sidebar-item` es un botón de ancho completo con icono (SVG de trazo simple `stroke="currentColor"`, nunca a color) + etiqueta. El item activo (`aria-current="page"`) lleva un fondo con un tinte naranja sutil (`color-mix` con el acento al ~18%) y un halo/glow suave a juego.
+- Al hacer clic en un `.sidebar-item`, oculta el `<div>` de sección actualmente visible y muestra el que corresponda a su `data-view`, y guarda ese `data-view` en `localStorage` (p. ej. clave `active_tab_v1`) para reabrir la misma sección la próxima vez que se cargue la página.
+- El botón `#appLogoBtn` (el logo dentro del sidebar) no navega a ninguna sección — está pensado para volver a la landing page que construirás al final, en su propio prompt; hasta que exista esa landing, puedes dejarlo sin acción o simplemente recargar la página.
 
 ## Estructura visual (de arriba abajo)
 

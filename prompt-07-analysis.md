@@ -1,6 +1,6 @@
 # Analysis — Prompt para Claude Code
 
-Requiere: el `index.html` base con sidebar (ver `prompt-01-dashboard.md`). No necesita ninguna cuenta externa salvo, opcionalmente, Supabase para sincronizar.
+Requiere: haber construido ya `prompt-01-dashboard.md` a `prompt-06-sleep.md` (trae el sidebar y el sistema de diseño). No necesita ninguna cuenta externa salvo, opcionalmente, Supabase para sincronizar.
 
 ## Objetivo
 
@@ -9,6 +9,17 @@ Una autoevaluación periódica de las grandes áreas de tu vida (salud, relacion
 ## Sistema de diseño base
 
 Mismo sistema que `prompt-01-dashboard.md`. Prefijo de clases sugerido: `.an-*`.
+
+## Añadir al sidebar
+
+Añade este item al `.sidebar-nav` ya existente, justo debajo de "Sleep":
+```html
+<button type="button" class="sidebar-item" data-view="analysisView">
+  <span class="sidebar-item-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+  Analysis
+</button>
+```
+Y un `<div id="analysisView" class="hidden">` nuevo dentro de `#appRoot`, con el contenido de esta sección.
 
 ## Estructura visual
 

@@ -1,6 +1,6 @@
 # Sleep — Prompt para Claude Code
 
-Requiere: el `index.html` base con sidebar (ver `prompt-01-dashboard.md`). Funciona igual de bien sin ninguna integración externa (con datos de muestra generados), pero para tener datos reales necesita una sección de gimnasio con integración de Polar Flow ya montada (ver `prompt-02-gym.md`, punto 5) — de ahí lee, sin escribir nunca, los entrenos/sueño/recuperación nocturna sincronizados.
+Requiere: haber construido ya `prompt-01-dashboard.md` a `prompt-05-health.md` (trae el sidebar y el sistema de diseño). Funciona igual de bien sin ninguna integración externa (con datos de muestra generados), pero para tener datos reales necesita una sección de gimnasio con integración de Polar Flow ya montada (ver `prompt-02-gym.md`, punto 5) — de ahí lee, sin escribir nunca, los entrenos/sueño/recuperación nocturna sincronizados.
 
 ## Objetivo
 
@@ -9,6 +9,17 @@ Una vista de sueño y recuperación al estilo de un reloj deportivo moderno: pun
 ## Sistema de diseño base
 
 Mismo sistema que `prompt-01-dashboard.md`. Prefijo de clases sugerido: `.sl-*`. Usa `--good`/`--warn`/`--bad` (verde/ámbar/rojo) para los indicadores de estado de esta sección en vez del acento naranja general — aquí el color es información real (bien/regular/mal), no decoración.
+
+## Añadir al sidebar
+
+Añade este item al `.sidebar-nav` ya existente, justo debajo de "Health":
+```html
+<button type="button" class="sidebar-item" data-view="sleepView">
+  <span class="sidebar-item-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg></span>
+  Sleep
+</button>
+```
+Y un `<div id="sleepView" class="hidden">` nuevo dentro de `#appRoot`, con el contenido de esta sección.
 
 ## Estructura visual
 

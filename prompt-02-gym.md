@@ -1,6 +1,6 @@
 # Gym — Prompt para Claude Code
 
-Requiere: el `index.html` base con sidebar (ver `prompt-01-dashboard.md` para el sistema de diseño completo si empiezas de cero). Opcional pero recomendado: una cuenta de desarrollador de Polar (gratuita) si quieres sincronizar entrenos reales desde un reloj Polar, y una cuenta de Netlify (gratuita) si vas a desplegar ahí, porque esa parte necesita un pequeño backend.
+Requiere: haber construido ya `prompt-01-dashboard.md` (trae el sidebar y el sistema de diseño). Opcional pero recomendado: una cuenta de desarrollador de Polar (gratuita) si quieres sincronizar entrenos reales desde un reloj Polar, y una cuenta de Netlify (gratuita) si vas a desplegar ahí, porque esa parte necesita un pequeño backend.
 
 ## Objetivo
 
@@ -9,6 +9,17 @@ Una sección de gimnasio con: seguimiento de peso corporal con gráfico y estima
 ## Sistema de diseño base
 
 Usa exactamente el mismo sistema que en `prompt-01-dashboard.md` (tema oscuro, tarjetas "glass" con blur, acento naranja en degradado con glow, botones píldora, sin librerías de gráficos externas). Prefijo de clases sugerido para esta sección: `.gt-*`.
+
+## Añadir al sidebar
+
+Añade este item al `.sidebar-nav` ya existente, justo debajo de "Dashboard":
+```html
+<button type="button" class="sidebar-item" data-view="gymView">
+  <span class="sidebar-item-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7v10"/><path d="M18 7v10"/><path d="M3 9v6"/><path d="M21 9v6"/><path d="M6 12h12"/></svg></span>
+  Gym
+</button>
+```
+Y un `<div id="gymView" class="hidden">` nuevo dentro de `#appRoot`, con el contenido de esta sección.
 
 ## 1. Peso corporal
 
